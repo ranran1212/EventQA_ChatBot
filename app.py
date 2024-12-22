@@ -166,7 +166,7 @@ def build_prompt(category_file: str, user_text: str) -> str:
         prompt_base = f.read()
 
     # カテゴリ別の参照ファイルを読み込み
-    category_file_path = os.path.join(base_dir, "prompt", category_file)
+    category_file_path = os.path.join(base_dir, "prompts", category_file)
     with open(category_file_path, "r", encoding="utf-8") as f:
         ref_text = f.read()
 
