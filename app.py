@@ -122,7 +122,6 @@ def classify_question_by_chatgpt(question_text: str) -> str:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.0,
         )
         classification = response["choices"][0]["message"]["content"].strip()
 
@@ -188,7 +187,6 @@ def get_openai_response(prompt: str) -> str:
         response = openai.ChatCompletion.create(
             model="o1-mini",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.7,
         )
         answer = response["choices"][0]["message"]["content"].strip()
         return answer
