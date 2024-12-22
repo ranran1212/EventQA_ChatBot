@@ -144,11 +144,11 @@ def map_category_to_file(category: str) -> str:
     対応するファイル名にマッピングする
     """
     if category == "イベント":
-        return "prompt/イベントについて.txt"
+        return "prompts/イベントについて.txt"
     elif category == "スタッフルール":
-        return "prompt/スタッフルールについて.txt"
+        return "prompts/スタッフルールについて.txt"
     elif category == "給与・勤務":
-        return "prompt/給与・勤務について.txt"
+        return "prompts/給与・勤務について.txt"
     else:
         # 想定外の場合も一旦イベントにフォールバック
         return "イベントについて.txt"
@@ -161,7 +161,7 @@ def build_prompt(category_file: str, user_text: str) -> str:
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     # prompt.txt 読み込み
-    prompt_file_path = os.path.join(base_dir, "prompt", "prompt.txt")
+    prompt_file_path = os.path.join(base_dir, "prompts", "prompt.txt")
     with open(prompt_file_path, "r", encoding="utf-8") as f:
         prompt_base = f.read()
 
