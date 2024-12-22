@@ -1,4 +1,4 @@
 Flask==3.0.3
 line-bot-sdk==3.14.1
-openai==1.54.3
+openai==0.28.0
 gunicorn==20.1.0
