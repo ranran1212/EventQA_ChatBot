@@ -144,11 +144,11 @@ def map_category_to_file(category: str) -> str:
     対応するファイル名にマッピングする
     """
     if category == "イベント":
-        return "prompts/イベントについて.txt"
+        return "イベントについて.txt"
     elif category == "スタッフルール":
-        return "prompts/スタッフルールについて.txt"
+        return "スタッフルールについて.txt"
     elif category == "給与・勤務":
-        return "prompts/給与・勤務について.txt"
+        return "給与・勤務について.txt"
     else:
         # 想定外の場合も一旦イベントにフォールバック
         return "イベントについて.txt"
