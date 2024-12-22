@@ -56,11 +56,10 @@ def handle_message(event):
             "current_category": None
         }
 
-    # (1) 「質問する」のトリガー
+    # 「質問する」のトリガー
     if user_text == "質問する":
         user_status[user_id]["in_question_mode"] = True
         user_status[user_id]["current_category"] = None
-
         reply_text = "質問内容を入力してください。"
         line_bot_api.reply_message(
             event.reply_token,
@@ -68,17 +67,34 @@ def handle_message(event):
         )
         return
 
-    # (2) 質問モードでない場合は何も返さず終了
+    # 別の質問
+    if user_text == "別の質問をする":
+        user_status[user_id]["current_category"] = None
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="質問内容を入力してください。")
+        )
+        return
+
+    # 終了
+    if user_text == "終了する":
+        user_status[user_id]["in_question_mode"] = False
+        user_status[user_id]["current_category"] = None
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="ご利用ありがとうございました。")
+        )
+        return
+
+    # 質問モードでない場合は何も返さず終了
     if not user_status[user_id]["in_question_mode"]:
         return
 
-    # (3) 質問モード中の場合、ChatGPT にカテゴリを判定させる
-    # まだカテゴリが決まっていなければ分類を実施
+    # 質問モード中の場合、ChatGPT にカテゴリを判定させる
     if not user_status[user_id]["current_category"]:
         category = classify_question_by_chatgpt(user_text)
         user_status[user_id]["current_category"] = category
     else:
-        # すでにカテゴリが決まっているなら、同じカテゴリを継続使用
         category = user_status[user_id]["current_category"]
 
     # カテゴリに応じてファイルを決定
@@ -95,11 +111,6 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text=response_text)
     )
-
-    if user_text == "終了":
-        user_status[user_id]["in_question_mode"] = False
-        user_status[user_id]["current_category"] = None
-
 
 def classify_question_by_chatgpt(question_text: str) -> str:
     """
@@ -189,6 +200,7 @@ def get_openai_response(prompt: str) -> str:
             messages=[{"role": "user", "content": prompt}],
         )
         answer = response["choices"][0]["message"]["content"].strip()
+        answer = answer.replace("**", "")
         return answer
     except Exception as e:
         print(f"OpenAI API Error: {e}")
